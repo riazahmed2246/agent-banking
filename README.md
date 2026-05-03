@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CopilotKit Demo App
 
-## Getting Started
+This demo application highlights the capabilities of CopilotKit by demonstrating how to build an app that emphasizes authorization, supports multiple operations, and incorporates generative UI elements. The banking application scenario serves as a practical example of these features in action.
 
-First, run the development server:
+## Installation and running
+
+To get started, install the package and run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm i
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+and then
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-## Learn More
+Please ensure to `export OPENAI_API_KEY=your-key` to enable OpenAI functionality.
 
-To learn more about Next.js, take a look at the following resources:
+## Key Features and Their Locations
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Authorization and Contextualization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Authorization is key in this app, with users assigned to different departments and roles.
 
-## Deploy on Vercel
+Explore how user roles and departments impact the app's behavior. Navigate to the bottom left corner and switch between users. This is done through an app-wide context provided to the co-pilot.<br>
+Implemented in `copilot-context.tsx`, it's a wrapper component that includes `useCopilotReadable` and `useCopilotAction` hooks for anything app-wide.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Multiple operations and information
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The application offers various operations that can be performed through the co-pilot on different pages. Here are some examples:
+
+- On the `/cards` page, you can request the co-pilot to change a credit card's PIN or add a new card. Note that adding a new card may have different outcomes depending on the user's role.
+- On the `/team` page, the co-pilot can assist with inviting a new member, editing a member's role or department, or removing a member.
+
+### Generative UI
+
+The app demonstrates the power of Generative UI through two main examples in `cards/page.tsx`:
+
+- Transaction Viewing:
+  - The `showTransactions` `useCopilotAction` exemplifies the ability to present information via a component, eliminating the need for additional text or LLM follow-up.
+  - Trigger this feature by requesting the co-pilot to display all transactions for a specific card, identified by its last 4 digits.
+- Transaction Approval:
+  - The `showAndApproveTransactions` `useCopilotAction` demonstrates the capacity to solicit user action, specifically the approval of transactions. This process is done one transaction at a time, ensuring all are resolved.
+  - Engage this feature by asking the co-pilot to display all transactions awaiting approval, such as "Show me all transactions pending my approval".
+
+### Handling Unavailable Actions
+
+The app handles unsupported actions by redirecting users to the relevant page, optionally starting the task. Explore this on the main page:
+
+- Ask the co-pilot to change a card's PIN (e.g., "Let's change the pin for my Visa"), and it will redirect you to the cards page with a change PIN popup.
+- Request assigning a policy to a card, and the co-pilot will acknowledge its inability to assist and offer guidance.
+
+This feature is implemented in `copilot-context.tsx` as `navigateToPageAndPerform`.
+
+## SQL Query Generator
+
+The SQL query generator at `/sql` leverages co-pilot chat with Generative UI to convert user questions into SQL queries. Users can pose questions like "Show me all transactions for my visa ending with 4242" or "Let's find the pending transaction for the policy assigned to the card ending with 4242" and receive a corresponding SQL query. The query can be copied or executed directly (execution functionality is currently unavailable).
+
+## Backend and data
+
+The `/api/v1` path serves as the primary endpoint for API requests, handling various routes that interact with the application's data. Notably, the `data.ts` file contains hardcoded data that is utilized throughout the application.

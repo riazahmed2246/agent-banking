@@ -1,0 +1,8 @@
+/* Replace the old @tailwind base/components/utilities with this: */
+@import "tailwindcss";
+
+/* Keep your custom variables below */
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
