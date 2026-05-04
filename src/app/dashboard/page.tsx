@@ -1,25 +1,30 @@
 "use client";
 
-import { AddCardDropdown } from "@/components/add-card-dropdown";
-import { CardBrand, MemberRole } from "@/app/api/v1/data";
+import { SqlTable } from "@/components/sql-table";
 
-export default function DashboardPage() {
-  const currentUser = {
-    role: MemberRole.Admin, // or whatever role
-  };
-
-  const handleAddCard = ({ type }: { type: CardBrand }) => {
-    console.log("Add card:", type);
+export default function Dashboard() {
+  const databaseStructure = {
+    users: [
+      { name: "id", type: "INT" },
+      { name: "name", type: "VARCHAR(255)" },
+      { name: "email", type: "VARCHAR(255)" },
+    ],
+    posts: [
+      { name: "id", type: "INT" },
+      { name: "title", type: "TEXT" },
+      { name: "user_id", type: "INT" },
+    ],
+      comments: [
+      { name: "id", type: "INT" },
+      { name: "content", type: "TEXT" },
+      { name: "post_id", type: "INT" },
+      { name: "user_id", type: "INT" },
+    ],
   };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-
-      <AddCardDropdown
-        currentUser={currentUser}
-        handleAddCard={handleAddCard}
-      />
-    </div>
+    <main className="p-6">
+      <SqlTable databaseStructure={databaseStructure} />
+    </main>
   );
 }
