@@ -115,7 +115,7 @@ export default function HomePage() {
                         </p>
                       </div>
                       <Button variant="outline" asChild>
-                        <a href="/">Manage</a>
+                        <a href="/cards">Manage</a>
                       </Button>
                     </div>
                   ))}
