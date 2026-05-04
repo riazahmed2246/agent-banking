@@ -7,13 +7,13 @@ This demo application highlights the capabilities of CopilotKit by demonstrating
 To get started, install the package and run the development server:
 
 ```bash
-pnpm i
+npm i
 ```
 
 and then
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
