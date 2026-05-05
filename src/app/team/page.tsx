@@ -237,15 +237,25 @@ export default function Team() {
     },
   });
 
-  const [dialogState, dispatchDialogState] = useReducer<
-    React.Reducer<DialogState, Partial<DialogState>>
-  >(
-    (state: DialogState, payload: Partial<DialogState>) => ({
-      ...state,
-      ...payload,
-    }),
-    defaultDialogState,
-  );
+ 
+  // const [dialogState, dispatchDialogState] = useReducer<
+  //   React.Reducer<DialogState, Partial<DialogState>>
+  // >(
+  //   (state: DialogState, payload: Partial<DialogState>) => ({
+  //     ...state,
+  //     ...payload,
+  //   }),
+  //   defaultDialogState,
+  // );
+
+const [dialogState, dispatchDialogState] = useReducer(
+  (state: DialogState, payload: Partial<DialogState>): DialogState => ({
+    ...state,
+    ...payload,
+  }),
+  defaultDialogState // Ensure this is explicitly typed as DialogState
+);
+
 
   const handleAddMemberSubmit = () => {
     dispatchDialogState({ loading: true });
